@@ -1,0 +1,85 @@
+﻿@model LogViewModel
+@{
+    ViewData["Title"] = "IISLogReader by Giusi Crescimanno for INGTES AG";
+}
+
+<div class="alert-box">
+    @await Html.PartialAsync("_AlertBox")
+</div>
+
+<div id="upload" class="row">
+    <div class="col-12">
+        <h2>Upload a logfile ...</h2>
+        <hr />
+        @await Html.PartialAsync("_UploadForm")
+    </div>
+</div>
+
+<div id="logSummary" class="row mt-4">
+    <div class="col-12">
+        <h3>Log Summary</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Client IP Address</th>
+                    <th>FQDN</th>
+                    <th>Number of Hits</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.LogEntriesSummary != null)
+                {
+                    @foreach (var entry in Model.LogEntriesSummary)
+                    {
+                        <tr>
+                            <td>@entry.ClientIpAddress</td>
+                            <td>@entry.ClientFqdn</td>
+                            <td>@entry.HitCount</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="logRawData" class="row mt-4">
+    <div class="col-12">
+        <h3>Raw Log Data</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time Taken</th>
+                    <th>IP</th>
+                    <th>Method</th>
+                    <th>Resource</th>
+                    <th>Status Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Log != null)
+                {
+                    foreach (var entry in Model.Log.LogEntries)
+                    {
+                        <tr>
+                            <td>@entry.Date</td>
+                            <td>@entry.TimeTaken</td>
+                            <td>@entry.Client.IP</td>
+                            <td>@entry.ClientToServer.Method</td>
+                            <td>@entry.Server.IP</td>
+                            <td>@entry.ServerToClient.Status</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#logSummaryTable').DataTable();
+        $('#logRawDataTable').DataTable();
+    });
+</script>
