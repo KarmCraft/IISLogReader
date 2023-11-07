@@ -6,6 +6,6 @@ public interface IIISLogService
 {
     IISLog? CurrentLog { get; }
     Task<IISLog> ParseLogAsync(Stream logStream);
-    IAsyncEnumerable<LogEntryDetails> GetLogEntriesSummaryAsync(IISLog log);
+    IAsyncEnumerable<LogEntrySummary> GetLogEntriesSummaryAsync(IISLog log);
 
 }

@@ -42,7 +42,7 @@ public class HomeController : Controller
                 var uploaded = TempData["CurrentLogUploaded"] == null ? DateTime.MinValue.ToString() : TempData["CurrentLogUploaded"]?.ToString();
                 _vm.Uploaded = DateTime.Parse(uploaded!);
 
-                if (TempData["CurrentLogDetailsCacheKey"] is string detailsCacheKey && _cache.TryGetValue(detailsCacheKey, out List<LogEntryDetails> logSummary))
+                if (TempData["CurrentLogDetailsCacheKey"] is string detailsCacheKey && _cache.TryGetValue(detailsCacheKey, out List<LogEntrySummary> logSummary))
                 {
                     _vm.LogEntriesSummary = logSummary;
                 }
@@ -81,7 +81,7 @@ public class HomeController : Controller
                 _cache.Set(cacheKey, _currentLog, TimeSpan.FromMinutes(10));
 
                 var cacheKeyDetails = "CurrentLogDetails_" + Guid.NewGuid().ToString();
-                var logDetailsList = new List<LogEntryDetails>();
+                var logDetailsList = new List<LogEntrySummary>();
 
                 await foreach (var detail in _logService.GetLogEntriesSummaryAsync(_currentLog))
                 {

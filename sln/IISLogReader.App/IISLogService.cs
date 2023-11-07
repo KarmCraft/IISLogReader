@@ -71,11 +71,11 @@ public class IISLogService : IIISLogService
         return CurrentLog;
     }
 
-    public async IAsyncEnumerable<LogEntryDetails> GetLogEntriesSummaryAsync(IISLog log)
+    public async IAsyncEnumerable<LogEntrySummary> GetLogEntriesSummaryAsync(IISLog log)
     {
         var query = log.LogEntries
             .GroupBy(entry => entry.Client?.IP)
-            .Select(group => new LogEntryDetails
+            .Select(group => new LogEntrySummary
             {
                 ClientIpAddress = group.Key,
                 ClientFqdn = "Internal",
@@ -107,7 +107,7 @@ public class IISLogService : IIISLogService
                 _logger.LogError(ex, "Lookup failed {IP}", item.ClientIpAddress);
             }
 
-            yield return new LogEntryDetails
+            yield return new LogEntrySummary
             {
                 ClientIpAddress = item.ClientIpAddress,
                 ClientFqdn = fqdn,
